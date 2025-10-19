@@ -1,0 +1,12 @@
+<svg width="512" height="512" viewBox="0 0 512 512" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <title>NeverNull Package Icon</title>
+    <defs>
+        <radialGradient id="grad" cx="50%" cy="50%" r="50%" fx="50%" fy="50%">
+        <stop offset="0%" style="stop-color:#0078D4;stop-opacity:1" />
+        <stop offset="100%" style="stop-color:#005A9E;stop-opacity:1" />
+        </radialGradient>
+    </defs>
+    <rect width="512" height="512" rx="100" fill="url(#grad)"/>
+    <rect x="146" y="146" width="220" height="220" rx="40" fill="#FFFFFF"/>
+    <path d="M352.5 192C344.25 183.75 330 183.75 321.75 192L235 278.75L190.25 234C182 225.75 167.75 225.75 159.5 234C151.25 242.25 151.25 256.5 159.5 264.75L221.75 327C230 335.25 244.25 335.25 252.5 327L352.5 227C360.75 218.75 360.75 204.5 352.5 192Z" fill="#0078D4"/>
+</svg>
