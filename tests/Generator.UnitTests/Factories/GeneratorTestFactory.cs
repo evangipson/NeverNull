@@ -37,8 +37,17 @@ internal static class GeneratorTestFactory
 """;
     }
 
-    internal static string GetExpectedGeneratedSimpleClassSource(string fieldType, string fieldName, string fieldAccess = "public", string initializerAccess = "public")
+    internal static string GetExpectedGeneratedSimpleClassSource(string fieldType, string fieldName, string fieldAccess = "public")
     {
+        var privateAccessor = fieldAccess.Equals("static", StringComparison.OrdinalIgnoreCase)
+            ? "private static"
+            : "private";
+        var publicAccessor = fieldAccess.Equals("static", StringComparison.OrdinalIgnoreCase)
+            ? "public static"
+            : "public";
+        var initializationAccessor = fieldAccess.Equals("static", StringComparison.OrdinalIgnoreCase)
+            ? "static"
+            : "public";
         var initializer = fieldType.Equals("string", StringComparison.OrdinalIgnoreCase)
             ? "string.Empty"
             : $"new {fieldType}()";
@@ -49,15 +58,15 @@ namespace MyNamespace;
 
 public partial class {{GeneratorTestConstants.SimpleClassName}}
 {
-    private {{fieldType}} _NeverNull_{{fieldName}};
+    {{privateAccessor}} {{fieldType}} _NeverNull_{{fieldName}};
 
-    {{fieldAccess}} {{fieldType}} NeverNull_{{fieldName}}
+    {{publicAccessor}} {{fieldType}} NeverNull_{{fieldName}}
     {
         get => _NeverNull_{{fieldName}} ?? (_NeverNull_{{fieldName}} = {{initializer}});
         set => _NeverNull_{{fieldName}} = value ?? {{initializer}};
     }
 
-    {{initializerAccess}} {{GeneratorTestConstants.SimpleClassName}}()
+    {{initializationAccessor}} {{GeneratorTestConstants.SimpleClassName}}()
     {
         {{fieldName}} = NeverNull_{{fieldName}};
     }

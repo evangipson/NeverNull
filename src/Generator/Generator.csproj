@@ -8,11 +8,28 @@
     <Nullable>enable</Nullable>
     <AssemblyName>NeverNull.Generator</AssemblyName>
     <RootNamespace>NeverNull.Generator</RootNamespace>
+    <Authors>Evan Gipson</Authors>
+    <VersionPrefix>1.0.0</VersionPrefix>
+    <PackageLicenseExpression>MIT</PackageLicenseExpression>
+    <IncludeBuildOutput>false</IncludeBuildOutput>
+  </PropertyGroup>
+
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <VersionPrefix>0.0.0</VersionPrefix>
+    <VersionSuffix>pre</VersionSuffix>
+    <PackageOutputPath>$(USERPROFILE)\.nuget-local</PackageOutputPath>
   </PropertyGroup>
 
   <ItemGroup>
     <PackageReference Include="Microsoft.CodeAnalysis.CSharp" Version="4.14.0" PrivateAssets="all" />
     <PackageReference Include="Microsoft.CodeAnalysis.Analyzers" Version="3.11.0" PrivateAssets="all" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="$(OutputPath)\$(AssemblyName).dll">
+      <Pack>True</Pack>
+      <PackagePath>\analyzers\dotnet\cs</PackagePath>
+    </None>
   </ItemGroup>
 
 </Project>

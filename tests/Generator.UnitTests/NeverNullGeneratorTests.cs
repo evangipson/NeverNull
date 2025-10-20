@@ -25,6 +25,40 @@ public class NeverNullGeneratorTests : CSharpSourceGeneratorTest<NeverNullGenera
     }
 
     [Theory]
+    [InlineData("int", "Number")]
+    [InlineData("System.DateTime", "Time")]
+    [InlineData("System.Guid", "Id")]
+    public async Task StaticValueTypeField_DoesNotGenerateNeverNullSource(string memberType, string memberName)
+    {
+        // Arrange
+        var source = GeneratorTestFactory.CreateSimpleClassSourceWithNeverNullField(memberType, memberName, "static");
+
+        // Act
+        TestState.Sources.Add(GeneratorTestConstants.NeverNullAttributeDefinition);
+        TestState.Sources.Add(source);
+
+        // Assert
+        await RunAsync();
+    }
+
+    [Theory]
+    [InlineData("int", "Number")]
+    [InlineData("System.DateTime", "Time")]
+    [InlineData("System.Guid", "Id")]
+    public async Task PrivateValueTypeField_DoesNotGenerateNeverNullSource(string memberType, string memberName)
+    {
+        // Arrange
+        var source = GeneratorTestFactory.CreateSimpleClassSourceWithNeverNullField(memberType, memberName, "private");
+
+        // Act
+        TestState.Sources.Add(GeneratorTestConstants.NeverNullAttributeDefinition);
+        TestState.Sources.Add(source);
+
+        // Assert
+        await RunAsync();
+    }
+
+    [Theory]
     [InlineData("string", "String")]
     [InlineData("object", "Object")]
     public async Task PublicPrimitiveField_GeneratesNeverNullSource(string memberType, string memberName)
@@ -32,6 +66,44 @@ public class NeverNullGeneratorTests : CSharpSourceGeneratorTest<NeverNullGenera
         // Arrange
         var source = GeneratorTestFactory.CreateSimpleClassSourceWithNeverNullField(memberType, memberName);
         var expected = GeneratorTestFactory.GetExpectedGeneratedSimpleClassSource(memberType, memberName);
+        var generatedSourceName = GeneratorTestFactory.GetGeneratedSourceName(memberName);
+
+        // Act
+        TestState.Sources.Add(GeneratorTestConstants.NeverNullAttributeDefinition);
+        TestState.Sources.Add(source);
+        TestState.GeneratedSources.Add((typeof(NeverNullGenerator), generatedSourceName, expected));
+
+        // Assert
+        await RunAsync();
+    }
+
+    [Theory]
+    [InlineData("string", "String")]
+    [InlineData("object", "Object")]
+    public async Task StaticPrimitiveField_GeneratesNeverNullSource(string memberType, string memberName)
+    {
+        // Arrange
+        var source = GeneratorTestFactory.CreateSimpleClassSourceWithNeverNullField(memberType, memberName, "static");
+        var expected = GeneratorTestFactory.GetExpectedGeneratedSimpleClassSource(memberType, memberName, "static");
+        var generatedSourceName = GeneratorTestFactory.GetGeneratedSourceName(memberName);
+
+        // Act
+        TestState.Sources.Add(GeneratorTestConstants.NeverNullAttributeDefinition);
+        TestState.Sources.Add(source);
+        TestState.GeneratedSources.Add((typeof(NeverNullGenerator), generatedSourceName, expected));
+
+        // Assert
+        await RunAsync();
+    }
+
+    [Theory]
+    [InlineData("string", "String")]
+    [InlineData("object", "Object")]
+    public async Task PrivatePrimitiveField_GeneratesNeverNullSource(string memberType, string memberName)
+    {
+        // Arrange
+        var source = GeneratorTestFactory.CreateSimpleClassSourceWithNeverNullField(memberType, memberName, "private");
+        var expected = GeneratorTestFactory.GetExpectedGeneratedSimpleClassSource(memberType, memberName, "private");
         var generatedSourceName = GeneratorTestFactory.GetGeneratedSourceName(memberName);
 
         // Act
@@ -52,6 +124,46 @@ public class NeverNullGeneratorTests : CSharpSourceGeneratorTest<NeverNullGenera
         // Arrange
         var source = GeneratorTestFactory.CreateSimpleClassSourceWithNeverNullField(listType, memberName, "public", ["System.Collections.Generic"]);
         var expected = GeneratorTestFactory.GetExpectedGeneratedSimpleClassSource($"System.Collections.Generic.{listType}", memberName);
+        var generatedSourceName = GeneratorTestFactory.GetGeneratedSourceName(memberName);
+
+        // Act
+        TestState.Sources.Add(GeneratorTestConstants.NeverNullAttributeDefinition);
+        TestState.Sources.Add(source);
+        TestState.GeneratedSources.Add((typeof(NeverNullGenerator), generatedSourceName, expected));
+
+        // Assert
+        await RunAsync();
+    }
+
+    [Theory]
+    [InlineData("List<string>", "Strings")]
+    [InlineData("List<int>", "Numbers")]
+    [InlineData("List<object>", "Objects")]
+    public async Task StaticListField_GeneratesNeverNullSource(string listType, string memberName)
+    {
+        // Arrange
+        var source = GeneratorTestFactory.CreateSimpleClassSourceWithNeverNullField(listType, memberName, "static", ["System.Collections.Generic"]);
+        var expected = GeneratorTestFactory.GetExpectedGeneratedSimpleClassSource($"System.Collections.Generic.{listType}", memberName, "static");
+        var generatedSourceName = GeneratorTestFactory.GetGeneratedSourceName(memberName);
+
+        // Act
+        TestState.Sources.Add(GeneratorTestConstants.NeverNullAttributeDefinition);
+        TestState.Sources.Add(source);
+        TestState.GeneratedSources.Add((typeof(NeverNullGenerator), generatedSourceName, expected));
+
+        // Assert
+        await RunAsync();
+    }
+
+    [Theory]
+    [InlineData("List<string>", "Strings")]
+    [InlineData("List<int>", "Numbers")]
+    [InlineData("List<object>", "Objects")]
+    public async Task PrivateListField_GeneratesNeverNullSource(string listType, string memberName)
+    {
+        // Arrange
+        var source = GeneratorTestFactory.CreateSimpleClassSourceWithNeverNullField(listType, memberName, "private", ["System.Collections.Generic"]);
+        var expected = GeneratorTestFactory.GetExpectedGeneratedSimpleClassSource($"System.Collections.Generic.{listType}", memberName, "private");
         var generatedSourceName = GeneratorTestFactory.GetGeneratedSourceName(memberName);
 
         // Act
